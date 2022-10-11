@@ -49,6 +49,21 @@ new ApplicationLoadBalancedEc2Service(stack, 'myService', {
   ],
 });
 
+// new ApplicationLoadBalancedEc2Service(stack, 'myServiceNoCluster', {
+//   vpc,
+//   memoryLimitMiB: 256,
+//   taskImageOptions: {
+//     image: ContainerImage.fromRegistry('amazon/amazon-ecs-sample'),
+//   },
+// });
+
+// new ApplicationLoadBalancedEc2Service(stack, 'myServiceNothing', {
+//   memoryLimitMiB: 256,
+//   taskImageOptions: {
+//     image: ContainerImage.fromRegistry('amazon/amazon-ecs-sample'),
+//   },
+// });
+
 new integ.IntegTest(app, 'applicationLoadBalancedEc2ServiceTest', {
   testCases: [stack],
 });

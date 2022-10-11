@@ -1,8 +1,9 @@
+import { AutoScalingGroup } from '@aws-cdk/aws-autoscaling';
 import { Certificate, CertificateValidation, ICertificate } from '@aws-cdk/aws-certificatemanager';
-import { IVpc } from '@aws-cdk/aws-ec2';
+import { InstanceClass, InstanceSize, InstanceType, IVpc, MachineImage, Vpc } from '@aws-cdk/aws-ec2';
 import {
   AwsLogDriver, BaseService, CloudMapOptions, Cluster, ContainerImage, DeploymentController, DeploymentCircuitBreaker,
-  ICluster, LogDriver, PropagatedTagSource, Secret, CapacityProviderStrategy,
+  ICluster, LogDriver, PropagatedTagSource, Secret, CapacityProviderStrategy, AsgCapacityProvider,
 } from '@aws-cdk/aws-ecs';
 import {
   ApplicationListener, ApplicationLoadBalancer, ApplicationProtocol, ApplicationProtocolVersion, ApplicationTargetGroup,
@@ -384,6 +385,7 @@ export abstract class ApplicationLoadBalancedServiceBase extends Construct {
    * when updating an existing service if one is not provided.
    */
   public readonly internalDesiredCount?: number;
+  autoScalingGroup: any;
 
   /**
    * The Application Load Balancer for the service.
@@ -420,6 +422,12 @@ export abstract class ApplicationLoadBalancedServiceBase extends Construct {
    */
   public readonly cluster: ICluster;
 
+  /**
+   * The autoscaling group for the service.
+   */
+  public readonly vpc?: IVpc;
+
+
   private readonly _applicationLoadBalancer?: ApplicationLoadBalancer;
 
   /**
@@ -431,7 +439,54 @@ export abstract class ApplicationLoadBalancedServiceBase extends Construct {
     if (props.cluster && props.vpc) {
       throw new Error('You can only specify either vpc or cluster. Alternatively, you can leave both blank');
     }
-    this.cluster = props.cluster || this.getDefaultCluster(this, props.vpc);
+
+    if (props.cluster) {
+      //cluster was passed, we can get the vpc from the cluster resource
+      this.cluster = props.cluster;
+    } else if (props.vpc) {
+      // vpc was passed, we need to create the clust + asg
+      this.autoScalingGroup = new AutoScalingGroup(this, 'autoScalingGroup', {
+        vpc: props.vpc,
+        instanceType: InstanceType.of(InstanceClass.T2, InstanceSize.MICRO),
+        machineImage: MachineImage.latestAmazonLinux(),
+      });
+
+      const asgProvider = new AsgCapacityProvider(this, 'asgProvider', {
+        autoScalingGroup: this.autoScalingGroup,
+      });
+
+      const cluster = new Cluster(this, `EcsDefaultClusterMnL3mNNYN${props.vpc ? props.vpc.node.id : ''}`, {
+        vpc: props.vpc,
+      });
+
+      cluster.addAsgCapacityProvider(asgProvider);
+
+      this.cluster = cluster;
+
+    } else {
+      //neither were passed, lets create them both.
+      this.vpc = new Vpc(this, 'vpc', {});
+
+      this.autoScalingGroup = new AutoScalingGroup(this, 'autoScalingGroup', {
+        vpc: this.vpc,
+        instanceType: InstanceType.of(InstanceClass.T2, InstanceSize.MICRO),
+        machineImage: MachineImage.latestAmazonLinux(),
+      });
+
+      const asgProvider = new AsgCapacityProvider(this, 'asgProvider', {
+        autoScalingGroup: this.autoScalingGroup,
+      });
+
+      const cluster = new Cluster(this, `EcsDefaultClusterMnL3mNNYN${this.vpc ? this.vpc.node.id : ''}`, {
+        vpc: props.vpc,
+      });
+
+      cluster.addAsgCapacityProvider(asgProvider);
+
+      this.cluster = cluster;
+    }
+
+    // this.cluster = props.cluster || this.getDefaultCluster(this, props.vpc);
 
     if (props.desiredCount !== undefined && !cdk.Token.isUnresolved(props.desiredCount) && props.desiredCount < 1) {
       throw new Error('You must specify a desiredCount greater than 0');

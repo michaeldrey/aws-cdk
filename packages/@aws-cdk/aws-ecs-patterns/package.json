@@ -130,7 +130,8 @@
       "docs-public-apis:@aws-cdk/aws-ecs-patterns.NetworkLoadBalancedTaskImageOptions",
       "docs-public-apis:@aws-cdk/aws-ecs-patterns.ScheduledTaskImageProps",
       "docs-public-apis:@aws-cdk/aws-ecs-patterns.FargateServiceBase",
-      "docs-public-apis:@aws-cdk/aws-ecs-patterns.FargateServiceBaseProps"
+      "docs-public-apis:@aws-cdk/aws-ecs-patterns.FargateServiceBaseProps",
+      "docs-public-apis:@aws-cdk/aws-ecs-patterns.ApplicationLoadBalancedServiceBase.autoScalingGroup"
     ]
   },
   "awscdkio": {
