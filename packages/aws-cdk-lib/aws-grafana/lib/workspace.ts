@@ -75,32 +75,20 @@ export interface IWorkspaceProps extends IResource {
 
 }
 
-// /**
-//  * An allow list receipt filter.
-//  */
-
-// abstract class WorkspaceBase extends Resource implements IWorkspaceProps {
-//   /**
-//    * The version of the workspace.
-//    */
-//   public abstract readonly workspaceVersion: string;
-//   /**
-//    * The name of the workspace
-//    */
-//   public abstract readonly workspaceName: string;
-// }
-
 export interface WorkspaceProps {
   /**
    * Specifies whether the workspace can access AWS resources in this AWS account only, or whether it can also access AWS resources in other accounts in the same organization.
    * If this is ORGANIZATION , the OrganizationalUnits parameter specifies which organizational units the workspace can access.
    *
+   * @default accountAccessType.CURRENT_ACCOUNT
    */
   readonly accountAccessType: accountAccessType;
   /**
-   * Specifies whether this workspace uses SAML 2.0, AWS IAM Identity Center , or both to authenticate users for using the Grafana console within a workspace. For more information, see User authentication in Amazon Managed Grafana .
+   * Specifies whether this workspace uses SAML 2.0, AWS IAM Identity Center , or both to authenticate users for using the Grafana console within a workspace. For more information, see User authentication in Amazon Managed Grafana.
    *
    * Allowed Values : AWS_SSO | SAML
+   *
+   * @default authenticationProviderTypes.AWS_SSO
    */
   readonly authenticationProviders: authenticationProviderTypes[];
   /**
@@ -109,6 +97,8 @@ export interface WorkspaceProps {
    * If this is CUSTOMER_MANAGED , you must manage those roles and permissions yourself.
    *
    * If you are working with a workspace in a member account of an organization and that account is not a delegated administrator account, and you want the workspace to access data sources in other AWS accounts in the organization, this parameter must be set to CUSTOMER_MANAGED .
+   *
+   * @default SERVICE_MANAGED
    */
   readonly permissionType: permissionTypes;
   /**
@@ -126,62 +116,90 @@ export interface WorkspaceProps {
    */
   readonly description?: string;
   /**
- * Specifies the version of Grafana to support in the workspace.
- *
- * @default 10.4
- */
+   * Specifies the version of Grafana to support in the workspace.
+   *
+   * @default 10.4
+   */
   readonly grafanaVersion?: grafanaVersionTypes;
   /**
- * The name of the workspace.
- */
+   * The name of the workspace.
+   */
   readonly name?: string;
   /**
- * The configuration settings for network access to your workspace.
- */
+   * The configuration settings for network access to your workspace.
+   */
   readonly networkAccessControl?: NetworkAccessControlProperty | IResolvable;
   /**
- * The AWS notification channels that Amazon Managed Grafana can automatically create IAM roles and permissions for, to allow Amazon Managed Grafana to use these channels.
- */
+   * The AWS notification channels that Amazon Managed Grafana can automatically create IAM roles and permissions for, to allow Amazon Managed Grafana to use these channels.
+   */
   readonly notificationDestinations?: string[];
   /**
- * The name of the IAM role that is used to access resources through Organizations.
- */
+   * The name of the IAM role that is used to access resources through Organizations.
+   */
   readonly organizationRoleName?: string;
   /**
- * Specifies the organizational units that this workspace is allowed to use data sources from, if this workspace is in an account that is part of an organization.
- */
+   * Specifies the organizational units that this workspace is allowed to use data sources from, if this workspace is in an account that is part of an organization.
+   */
   readonly organizationalUnits?: string[];
   /**
- * Whether plugin administration is enabled in the workspace.
- */
+   * Whether plugin administration is enabled in the workspace.
+   */
   readonly pluginAdminEnabled?: boolean;
   /**
- * The IAM role that grants permissions to the AWS resources that the workspace will view data from.
- */
+   * The IAM role that grants permissions to the AWS resources that the workspace will view data from.
+   */
   readonly roleArn?: string;
   /**
- * If the workspace uses SAML, use this structure to map SAML assertion attributes to workspace user information and define which groups in the assertion attribute are to have the Admin and Editor roles in the workspace.
- */
+   * If the workspace uses SAML, use this structure to map SAML assertion attributes to workspace user information and define which groups in the assertion attribute are to have the Admin and Editor roles in the workspace.
+   */
   readonly samlConfiguration?: SamlConfigurationProperty | IResolvable;
   /**
- * The name of the AWS CloudFormation stack set that is used to generate IAM roles to be used for this workspace.
- */
+   * The name of the AWS CloudFormation stack set that is used to generate IAM roles to be used for this workspace.
+   */
   readonly stackSetName?: string;
   /**
- * The configuration settings for an Amazon VPC that contains data sources for your Grafana workspace to connect to.
- */
+   * The configuration settings for an Amazon VPC that contains data sources for your Grafana workspace to connect to.
+   */
   readonly vpcConfiguration?: VpcConfigurationProperty| IResolvable;
 }
 
 export class Workspace extends Resource implements IWorkspaceProps {
-  public readonly workspaceVersion: string;
+  /** @attribute */
+  public readonly creationTimestamp: string;
+
+  /** @attribute */
+  public readonly endpoint: string;
+
+  /** @attribute */
+  public readonly modificationTimestamp: string;
+
+  /** @attribute */
+  public readonly SamlConfigurationStatus: string;
+
+  /** @attribute */
+  public readonly SsoClientId: string;
+
+  /** @attribute */
+  public readonly workspaceId: string;
+
+  /** @attribute */
   public readonly workspaceName: string;
+
+  /** @attribute */
+  public readonly workspaceStatus: string;
+
+  /** @attribute */
+  public readonly workspaceVersion: string;
+
+  /** @attribute */
+  public readonly version: string;
+
   private readonly workspace: CfnWorkspace;
 
   constructor(scope: Construct, id: string, props: WorkspaceProps ) {
     super(scope, id);
 
-    //Defaults
+    // Defaults
     let grafanaVersion;
     if (props.grafanaVersion) {
       grafanaVersion = props.grafanaVersion;
@@ -250,6 +268,14 @@ export class Workspace extends Resource implements IWorkspaceProps {
       resourceName: this.physicalName,
     });
     this.workspaceName = this.getResourceNameAttribute(this.workspace.ref);
+    this.creationTimestamp = this.workspace.attrCreationTimestamp;
+    this.endpoint = this.workspace.attrEndpoint;
+    this.workspaceId = this.workspace.attrId;
+    this.modificationTimestamp = this.workspace.attrModificationTimestamp;
+    this.SamlConfigurationStatus = this.workspace.attrSamlConfigurationStatus;
+    this.SsoClientId = this.workspace.attrSsoClientId;
+    this.workspaceStatus = this.workspace.attrStatus;
+    this.version = this.workspace.attrGrafanaVersion;
 
     function validateDataSources(dataSources: string[], permissionType: permissionTypes): void {
       if (permissionType === permissionTypes.CUSTOMER_MANAGED || (Array.isArray(dataSources && dataSources.length > 0 ))) {
@@ -259,7 +285,7 @@ export class Workspace extends Resource implements IWorkspaceProps {
 
     function validateClientToken(clientToken: string): void {
       const regex = new RegExp('^[!-~]{1,64}$');
-      if (regex.test(clientToken)) {
+      if (!regex.test(clientToken)) {
         throw new Error(`clientToken does not match the regex \^[!-~]{1,64}$\`, got ${clientToken}.`);
       }
     }
@@ -272,7 +298,7 @@ export class Workspace extends Resource implements IWorkspaceProps {
 
     function validateName(name: string): void {
       const regex = new RegExp('^[a-zA-Z0-9-._~]{1,255}$');
-      if (regex.test(name)) {
+      if (!regex.test(name)) {
         throw new Error(`name must match \`^[a-zA-Z0-9-._~]{1,255}$\` pattern, got ${name}.`);
       }
     }

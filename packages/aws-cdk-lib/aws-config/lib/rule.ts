@@ -620,6 +620,7 @@ export class CustomPolicy extends RuleNew {
     this.configRuleId = rule.attrConfigRuleId;
     this.configRuleComplianceType = rule.attrComplianceType;
     this.isCustomWithChanges = true;
+    
   }
 }
 
