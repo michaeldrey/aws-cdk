@@ -1,27 +1,114 @@
-# AWS::Grafana Construct Library
+# Amazon Managed Grafana Construct Library
 
-
-This module is part of the [AWS Cloud Development Kit](https://github.com/aws/aws-cdk) project.
+This module provides constructs for Amazon Managed Grafana workspaces.
 
 ```ts nofixture
 import * as grafana from 'aws-cdk-lib/aws-grafana';
 ```
 
-<!--BEGIN CFNONLY DISCLAIMER-->
+## Workspace
 
-There are no official hand-written ([L2](https://docs.aws.amazon.com/cdk/latest/guide/constructs.html#constructs_lib)) constructs for this service yet. Here are some suggestions on how to proceed:
+The `Workspace` construct creates an Amazon Managed Grafana workspace. A workspace is a logically isolated, high-availability Grafana server where you can create Grafana dashboards and visualizations to analyze your metrics, logs, and traces.
 
-- Search [Construct Hub for Grafana construct libraries](https://constructs.dev/search?q=grafana)
-- Use the automatically generated [L1](https://docs.aws.amazon.com/cdk/latest/guide/constructs.html#constructs_l1_using) constructs, in the same way you would use [the CloudFormation AWS::Grafana resources](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/AWS_Grafana.html) directly.
+### Minimal Configuration
 
+All props have sensible defaults, so you can create a workspace with no configuration:
 
-<!--BEGIN CFNONLY DISCLAIMER-->
+```ts
+new grafana.Workspace(this, 'Workspace');
+```
 
-There are no hand-written ([L2](https://docs.aws.amazon.com/cdk/latest/guide/constructs.html#constructs_lib)) constructs for this service yet. 
-However, you can still use the automatically generated [L1](https://docs.aws.amazon.com/cdk/latest/guide/constructs.html#constructs_l1_using) constructs, and use this service exactly as you would using CloudFormation directly.
+This creates a workspace with:
+- `CURRENT_ACCOUNT` access
+- `AWS_SSO` authentication
+- `SERVICE_MANAGED` permissions
+- Grafana version 10.4
 
-For more information on the resources and properties available for this service, see the [CloudFormation documentation for AWS::Grafana](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/AWS_Grafana.html).
+### Full Configuration
 
-(Read the [CDK Contributing Guide](https://github.com/aws/aws-cdk/blob/main/CONTRIBUTING.md) and submit an RFC if you are interested in contributing to this construct library.)
+```ts
+import * as iam from 'aws-cdk-lib/aws-iam';
 
-<!--END CFNONLY DISCLAIMER-->
+const role = new iam.Role(this, 'GrafanaRole', {
+  assumedBy: new iam.ServicePrincipal('grafana.amazonaws.com'),
+});
+
+new grafana.Workspace(this, 'Workspace', {
+  accountAccessType: grafana.AccountAccessType.ORGANIZATION,
+  authenticationProviders: [grafana.AuthenticationProviderType.SAML],
+  permissionType: grafana.PermissionType.CUSTOMER_MANAGED,
+  name: 'my-workspace',
+  description: 'Production monitoring workspace',
+  grafanaVersion: grafana.GrafanaVersion.V10_4,
+  pluginAdminEnabled: true,
+  role,
+  organizationalUnits: ['ou-1234'],
+  samlConfiguration: {
+    idpMetadata: {
+      url: 'https://my-idp.example.com/metadata',
+    },
+    assertionAttributes: {
+      name: 'displayName',
+      login: 'login',
+      email: 'email',
+      groups: 'group',
+      role: 'role',
+      org: 'org',
+    },
+    roleValues: {
+      editor: ['editor-group'],
+      admin: ['admin-group'],
+    },
+    allowedOrganizations: ['myorg'],
+    loginValidityDuration: 60,
+  },
+});
+```
+
+### VPC Configuration
+
+You can connect a workspace to a VPC to access private data sources:
+
+```ts
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+
+const vpc = new ec2.Vpc(this, 'Vpc');
+const securityGroup = new ec2.SecurityGroup(this, 'SG', { vpc });
+
+new grafana.Workspace(this, 'Workspace', {
+  vpcConfiguration: {
+    securityGroupIds: [securityGroup.securityGroupId],
+    subnetIds: vpc.privateSubnets.map(s => s.subnetId),
+  },
+});
+```
+
+### Importing Existing Workspaces
+
+You can import an existing workspace by ARN:
+
+```ts
+const workspace = grafana.Workspace.fromWorkspaceArn(
+  this, 'Imported', 'arn:aws:grafana:us-east-1:123456789012:/workspaces/g-abc123',
+);
+```
+
+Or by attributes:
+
+```ts
+const workspace = grafana.Workspace.fromWorkspaceAttributes(this, 'Imported', {
+  workspaceId: 'g-abc123',
+  workspaceEndpoint: 'https://g-abc123.grafana-workspace.us-east-1.amazonaws.com',
+});
+```
+
+### Granting Access
+
+You can grant IAM permissions on the workspace:
+
+```ts
+declare const workspace: grafana.Workspace;
+declare const user: iam.IUser;
+
+workspace.grant(user, 'grafana:DescribeWorkspace', 'grafana:UpdateWorkspace');
+```
