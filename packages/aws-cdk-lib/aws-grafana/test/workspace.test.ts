@@ -128,7 +128,7 @@ describe('Grafana Workspace', () => {
     test('fails when clientToken is invalid', () => {
       expect(() => {
         new Workspace(stack, 'Workspace', {
-          clientToken: '@invalid@',
+          clientToken: 'invalid token with spaces',
         });
       }).toThrow(/clientToken must match the pattern/);
     });
@@ -185,7 +185,6 @@ describe('Grafana Workspace', () => {
     });
 
     test('skips validation for unresolved tokens', () => {
-      const token = stack.resolve(stack.stackName);
       expect(() => {
         new Workspace(stack, 'Workspace', {
           clientToken: stack.stackName,

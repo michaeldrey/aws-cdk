@@ -12,9 +12,9 @@ export interface NetworkAccessControlProperty {
   /**
    * An array of prefix list IDs.
    */
-  prefixListIds: string[];
+  readonly prefixListIds: string[];
   /**
    * An array of Amazon VPC endpoint IDs for the workspace.
    */
-  vpceIds: string[];
+  readonly vpceIds: string[];
 }

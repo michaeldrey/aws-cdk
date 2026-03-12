@@ -1,10 +1,11 @@
-import { Construct } from 'constructs';
+import type { Construct } from 'constructs';
 import { CfnWorkspace } from './grafana.generated';
-import { NetworkAccessControlProperty } from './networkAccessControlProperty';
-import { SamlConfigurationProperty } from './samlConfigurationProperty';
-import { VpcConfigurationProperty } from './vpcConfigurationProperty';
+import type { NetworkAccessControlProperty } from './networkAccessControlProperty';
+import type { SamlConfigurationProperty } from './samlConfigurationProperty';
+import type { VpcConfigurationProperty } from './vpcConfigurationProperty';
 import * as iam from '../../aws-iam';
-import { ArnFormat, IResolvable, IResource, Resource, Stack, Token } from '../../core';
+import { ArnFormat, type IResolvable, type IResource, Resource, Stack, Token } from '../../core';
+import { ValidationError } from '../../core/lib/errors';
 
 /**
  * Specifies whether the workspace can access AWS resources in this AWS account only,
@@ -331,7 +332,7 @@ export class Workspace extends WorkspaceBase {
    */
   public static fromWorkspaceAttributes(scope: Construct, id: string, attrs: WorkspaceAttributes): IWorkspace {
     if (!attrs.workspaceArn && !attrs.workspaceId) {
-      throw new Error('At least one of workspaceArn or workspaceId must be provided');
+      throw new ValidationError('At least one of workspaceArn or workspaceId must be provided', scope);
     }
 
     const workspaceArn = attrs.workspaceArn ?? Stack.of(scope).formatArn({
@@ -473,34 +474,34 @@ export class Workspace extends WorkspaceBase {
   private _validateProps(props: WorkspaceProps, grafanaVersion: GrafanaVersion, permissionType: PermissionType): void {
     if (props.clientToken && !Token.isUnresolved(props.clientToken)) {
       if (!/^[!-~]{1,64}$/.test(props.clientToken)) {
-        throw new Error(`clientToken must match the pattern \`^[!-~]{1,64}$\`, got '${props.clientToken}'.`);
+        throw new ValidationError(`clientToken must match the pattern \`^[!-~]{1,64}$\`, got '${props.clientToken}'.`, this);
       }
     }
 
     if (props.description && !Token.isUnresolved(props.description)) {
       if (props.description.length > 2048) {
-        throw new Error(`description must be 2048 characters or fewer, got ${props.description.length}.`);
+        throw new ValidationError(`description must be 2048 characters or fewer, got ${props.description.length}.`, this);
       }
     }
 
     if (props.name && !Token.isUnresolved(props.name)) {
       if (!/^[a-zA-Z0-9-._~]{1,255}$/.test(props.name)) {
-        throw new Error(`name must match the pattern \`^[a-zA-Z0-9-._~]{1,255}$\`, got '${props.name}'.`);
+        throw new ValidationError(`name must match the pattern \`^[a-zA-Z0-9-._~]{1,255}$\`, got '${props.name}'.`, this);
       }
     }
 
     if (props.organizationRoleName && !Token.isUnresolved(props.organizationRoleName)) {
       if (props.organizationRoleName.length > 2048) {
-        throw new Error(`organizationRoleName must be 2048 characters or fewer, got ${props.organizationRoleName.length}.`);
+        throw new ValidationError(`organizationRoleName must be 2048 characters or fewer, got ${props.organizationRoleName.length}.`, this);
       }
     }
 
     if (props.dataSources && props.dataSources.length > 0 && permissionType !== PermissionType.SERVICE_MANAGED) {
-      throw new Error('dataSources can only be used when permissionType is SERVICE_MANAGED.');
+      throw new ValidationError('dataSources can only be used when permissionType is SERVICE_MANAGED.', this);
     }
 
     if (props.pluginAdminEnabled && grafanaVersion === GrafanaVersion.V8_4) {
-      throw new Error('pluginAdminEnabled is only valid for Grafana versions 9 or newer.');
+      throw new ValidationError('pluginAdminEnabled is only valid for Grafana versions 9 or newer.', this);
     }
   }
 }
