@@ -1,0 +1,13 @@
+{
+  "version": "52.0.0",
+  "testCases": {
+    "GrafanaWorkspaceCompleteTest/DefaultTest": {
+      "stacks": [
+        "grafana-complete-integ"
+      ],
+      "assertionStack": "GrafanaWorkspaceCompleteTest/DefaultTest/DeployAssert",
+      "assertionStackName": "GrafanaWorkspaceCompleteTestDefaultTestDeployAssert5F785DD8"
+    }
+  },
+  "minimumCliVersion": "2.1107.0"
+}

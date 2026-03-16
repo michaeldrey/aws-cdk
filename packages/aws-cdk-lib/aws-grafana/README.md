@@ -12,17 +12,25 @@ The `Workspace` construct creates an Amazon Managed Grafana workspace. A workspa
 
 ### Minimal Configuration
 
-All props have sensible defaults, so you can create a workspace with no configuration:
+Create a workspace with SAML authentication and a customer-managed role:
 
 ```ts
-new grafana.Workspace(this, 'Workspace');
+import * as iam from 'aws-cdk-lib/aws-iam';
+
+const role = new iam.Role(this, 'GrafanaRole', {
+  assumedBy: new iam.ServicePrincipal('grafana.amazonaws.com'),
+});
+
+new grafana.Workspace(this, 'Workspace', {
+  authenticationProviders: [grafana.AuthenticationProviderType.SAML],
+  permissionType: grafana.PermissionType.CUSTOMER_MANAGED,
+  role,
+});
 ```
 
-This creates a workspace with:
-- `CURRENT_ACCOUNT` access
-- `AWS_SSO` authentication
-- `SERVICE_MANAGED` permissions
-- Grafana version 10.4
+By default, a workspace uses `CURRENT_ACCOUNT` access and Grafana version 10.4.
+
+> **Note:** When using `CURRENT_ACCOUNT` access, the Grafana API requires a workspace role ARN. When using `AWS_SSO` authentication, AWS IAM Identity Center must be enabled in your account.
 
 ### Full Configuration
 

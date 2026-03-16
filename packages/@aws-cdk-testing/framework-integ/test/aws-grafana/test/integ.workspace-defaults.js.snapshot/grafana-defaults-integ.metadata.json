@@ -1,0 +1,37 @@
+{
+  "/grafana-defaults-integ/GrafanaRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    }
+  ],
+  "/grafana-defaults-integ/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/grafana-defaults-integ/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/grafana-defaults-integ/GrafanaRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaRole3A2DB257"
+    }
+  ],
+  "/grafana-defaults-integ/DefaultWorkspace/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DefaultWorkspace1D58AF15"
+    }
+  ]
+}

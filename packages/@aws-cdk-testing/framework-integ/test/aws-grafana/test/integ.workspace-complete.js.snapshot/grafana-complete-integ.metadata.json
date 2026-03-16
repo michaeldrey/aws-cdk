@@ -1,0 +1,358 @@
+{
+  "/grafana-complete-integ/GrafanaVPC": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "maxAzs": "*"
+      }
+    }
+  ],
+  "/grafana-complete-integ/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/grafana-complete-integ/GrafanaSecurityGroup": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "description": "*",
+        "allowAllOutbound": true
+      }
+    }
+  ],
+  "/grafana-complete-integ/GrafanaWorkspaceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "description": "*"
+      }
+    }
+  ],
+  "/grafana-complete-integ/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/grafana-complete-integ/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPC900E13F8"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PublicSubnet1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": true,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": true,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {}
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addNatGateway": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PublicSubnet2": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": true,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": true,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {}
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addNatGateway": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PrivateSubnet1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {}
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PrivateSubnet2": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {}
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/IGW": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCIGWE7CE34BA"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/VPCGW": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCVPCGWDB2FA086"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/RestrictDefaultSecurityGroupCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/grafana-complete-integ/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+    }
+  ],
+  "/grafana-complete-integ/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaSecurityGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaSecurityGroup750494FF"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaWorkspaceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaWorkspaceRole96428B9D"
+    }
+  ],
+  "/grafana-complete-integ/CompleteWorkspace/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CompleteWorkspace91A6B9FE"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PublicSubnet1/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPublicSubnet1Subnet7943A5C4"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PublicSubnet1/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPublicSubnet1RouteTable91BC6C8F"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PublicSubnet1/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPublicSubnet1RouteTableAssociationCD9FD734"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PublicSubnet1/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPublicSubnet1DefaultRouteE8E1165B"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PublicSubnet1/EIP": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPublicSubnet1EIP55076B05"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PublicSubnet1/NATGateway": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPublicSubnet1NATGatewayC2B9DAEB"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PublicSubnet2/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPublicSubnet2Subnet5846D5A2"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PublicSubnet2/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPublicSubnet2RouteTableB7FDDBEC"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PublicSubnet2/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPublicSubnet2RouteTableAssociationC234116A"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PublicSubnet2/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPublicSubnet2DefaultRoute22F77B0E"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PublicSubnet2/EIP": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPublicSubnet2EIPF08ABD6F"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PublicSubnet2/NATGateway": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPublicSubnet2NATGateway79032D77"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PrivateSubnet1/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPrivateSubnet1Subnet3460214A"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PrivateSubnet1/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPrivateSubnet1RouteTable4E866581"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PrivateSubnet1/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPrivateSubnet1RouteTableAssociationAA1ED9CE"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PrivateSubnet1/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPrivateSubnet1DefaultRoute0AEA9C7E"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PrivateSubnet2/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPrivateSubnet2Subnet2B050686"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PrivateSubnet2/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPrivateSubnet2RouteTable1DE4F6FD"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PrivateSubnet2/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPrivateSubnet2RouteTableAssociationC0CCD8FC"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/PrivateSubnet2/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCPrivateSubnet2DefaultRoute1054D3A2"
+    }
+  ],
+  "/grafana-complete-integ/GrafanaVPC/RestrictDefaultSecurityGroupCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaVPCRestrictDefaultSecurityGroupCustomResource768E3919"
+    }
+  ]
+}

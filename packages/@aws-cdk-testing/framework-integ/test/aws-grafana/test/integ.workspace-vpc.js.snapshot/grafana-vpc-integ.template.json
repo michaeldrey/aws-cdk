@@ -1,0 +1,615 @@
+{
+ "Resources": {
+  "GrafanaVPC900E13F8": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "grafana-vpc-integ/GrafanaVPC"
+     }
+    ]
+   }
+  },
+  "GrafanaVPCPublicSubnet1Subnet7943A5C4": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.0.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "grafana-vpc-integ/GrafanaVPC/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "GrafanaVPC900E13F8"
+    }
+   }
+  },
+  "GrafanaVPCPublicSubnet1RouteTable91BC6C8F": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "grafana-vpc-integ/GrafanaVPC/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "GrafanaVPC900E13F8"
+    }
+   }
+  },
+  "GrafanaVPCPublicSubnet1RouteTableAssociationCD9FD734": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "GrafanaVPCPublicSubnet1RouteTable91BC6C8F"
+    },
+    "SubnetId": {
+     "Ref": "GrafanaVPCPublicSubnet1Subnet7943A5C4"
+    }
+   }
+  },
+  "GrafanaVPCPublicSubnet1DefaultRouteE8E1165B": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "GrafanaVPCIGWE7CE34BA"
+    },
+    "RouteTableId": {
+     "Ref": "GrafanaVPCPublicSubnet1RouteTable91BC6C8F"
+    }
+   },
+   "DependsOn": [
+    "GrafanaVPCVPCGWDB2FA086"
+   ]
+  },
+  "GrafanaVPCPublicSubnet1EIP55076B05": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "grafana-vpc-integ/GrafanaVPC/PublicSubnet1"
+     }
+    ]
+   }
+  },
+  "GrafanaVPCPublicSubnet1NATGatewayC2B9DAEB": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "GrafanaVPCPublicSubnet1EIP55076B05",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "GrafanaVPCPublicSubnet1Subnet7943A5C4"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "grafana-vpc-integ/GrafanaVPC/PublicSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "GrafanaVPCPublicSubnet1DefaultRouteE8E1165B",
+    "GrafanaVPCPublicSubnet1RouteTableAssociationCD9FD734"
+   ]
+  },
+  "GrafanaVPCPublicSubnet2Subnet5846D5A2": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.64.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "grafana-vpc-integ/GrafanaVPC/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "GrafanaVPC900E13F8"
+    }
+   }
+  },
+  "GrafanaVPCPublicSubnet2RouteTableB7FDDBEC": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "grafana-vpc-integ/GrafanaVPC/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "GrafanaVPC900E13F8"
+    }
+   }
+  },
+  "GrafanaVPCPublicSubnet2RouteTableAssociationC234116A": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "GrafanaVPCPublicSubnet2RouteTableB7FDDBEC"
+    },
+    "SubnetId": {
+     "Ref": "GrafanaVPCPublicSubnet2Subnet5846D5A2"
+    }
+   }
+  },
+  "GrafanaVPCPublicSubnet2DefaultRoute22F77B0E": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "GrafanaVPCIGWE7CE34BA"
+    },
+    "RouteTableId": {
+     "Ref": "GrafanaVPCPublicSubnet2RouteTableB7FDDBEC"
+    }
+   },
+   "DependsOn": [
+    "GrafanaVPCVPCGWDB2FA086"
+   ]
+  },
+  "GrafanaVPCPublicSubnet2EIPF08ABD6F": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "grafana-vpc-integ/GrafanaVPC/PublicSubnet2"
+     }
+    ]
+   }
+  },
+  "GrafanaVPCPublicSubnet2NATGateway79032D77": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "GrafanaVPCPublicSubnet2EIPF08ABD6F",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "GrafanaVPCPublicSubnet2Subnet5846D5A2"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "grafana-vpc-integ/GrafanaVPC/PublicSubnet2"
+     }
+    ]
+   },
+   "DependsOn": [
+    "GrafanaVPCPublicSubnet2DefaultRoute22F77B0E",
+    "GrafanaVPCPublicSubnet2RouteTableAssociationC234116A"
+   ]
+  },
+  "GrafanaVPCPrivateSubnet1Subnet3460214A": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.128.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "grafana-vpc-integ/GrafanaVPC/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "GrafanaVPC900E13F8"
+    }
+   }
+  },
+  "GrafanaVPCPrivateSubnet1RouteTable4E866581": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "grafana-vpc-integ/GrafanaVPC/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "GrafanaVPC900E13F8"
+    }
+   }
+  },
+  "GrafanaVPCPrivateSubnet1RouteTableAssociationAA1ED9CE": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "GrafanaVPCPrivateSubnet1RouteTable4E866581"
+    },
+    "SubnetId": {
+     "Ref": "GrafanaVPCPrivateSubnet1Subnet3460214A"
+    }
+   }
+  },
+  "GrafanaVPCPrivateSubnet1DefaultRoute0AEA9C7E": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "GrafanaVPCPublicSubnet1NATGatewayC2B9DAEB"
+    },
+    "RouteTableId": {
+     "Ref": "GrafanaVPCPrivateSubnet1RouteTable4E866581"
+    }
+   }
+  },
+  "GrafanaVPCPrivateSubnet2Subnet2B050686": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.192.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "grafana-vpc-integ/GrafanaVPC/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "GrafanaVPC900E13F8"
+    }
+   }
+  },
+  "GrafanaVPCPrivateSubnet2RouteTable1DE4F6FD": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "grafana-vpc-integ/GrafanaVPC/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "GrafanaVPC900E13F8"
+    }
+   }
+  },
+  "GrafanaVPCPrivateSubnet2RouteTableAssociationC0CCD8FC": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "GrafanaVPCPrivateSubnet2RouteTable1DE4F6FD"
+    },
+    "SubnetId": {
+     "Ref": "GrafanaVPCPrivateSubnet2Subnet2B050686"
+    }
+   }
+  },
+  "GrafanaVPCPrivateSubnet2DefaultRoute1054D3A2": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "GrafanaVPCPublicSubnet2NATGateway79032D77"
+    },
+    "RouteTableId": {
+     "Ref": "GrafanaVPCPrivateSubnet2RouteTable1DE4F6FD"
+    }
+   }
+  },
+  "GrafanaVPCIGWE7CE34BA": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "grafana-vpc-integ/GrafanaVPC"
+     }
+    ]
+   }
+  },
+  "GrafanaVPCVPCGWDB2FA086": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "GrafanaVPCIGWE7CE34BA"
+    },
+    "VpcId": {
+     "Ref": "GrafanaVPC900E13F8"
+    }
+   }
+  },
+  "GrafanaVPCRestrictDefaultSecurityGroupCustomResource768E3919": {
+   "Type": "Custom::VpcRestrictDefaultSG",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E",
+      "Arn"
+     ]
+    },
+    "DefaultSecurityGroupId": {
+     "Fn::GetAtt": [
+      "GrafanaVPC900E13F8",
+      "DefaultSecurityGroup"
+     ]
+    },
+    "Account": {
+     "Ref": "AWS::AccountId"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:AuthorizeSecurityGroupEgress",
+          "ec2:RevokeSecurityGroupIngress",
+          "ec2:RevokeSecurityGroupEgress"
+         ],
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:",
+             {
+              "Ref": "AWS::Partition"
+             },
+             ":ec2:",
+             {
+              "Ref": "AWS::Region"
+             },
+             ":",
+             {
+              "Ref": "AWS::AccountId"
+             },
+             ":security-group/",
+             {
+              "Fn::GetAtt": [
+               "GrafanaVPC900E13F8",
+               "DefaultSecurityGroup"
+              ]
+             }
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "55549d0bfa9628b306c349544b7d95017221e259e17875f3d38f2a3d2da5043f.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
+   },
+   "DependsOn": [
+    "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+   ]
+  },
+  "GrafanaSecurityGroup750494FF": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for Grafana workspace",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "GrafanaVPC900E13F8"
+    }
+   }
+  },
+  "GrafanaRole3A2DB257": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "grafana.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "VpcWorkspace827DEF05": {
+   "Type": "AWS::Grafana::Workspace",
+   "Properties": {
+    "AccountAccessType": "CURRENT_ACCOUNT",
+    "AuthenticationProviders": [
+     "SAML"
+    ],
+    "Description": "VPC-connected Grafana Workspace",
+    "GrafanaVersion": "10.4",
+    "Name": "vpc-workspace",
+    "PermissionType": "CUSTOMER_MANAGED",
+    "RoleArn": {
+     "Fn::GetAtt": [
+      "GrafanaRole3A2DB257",
+      "Arn"
+     ]
+    },
+    "VpcConfiguration": {
+     "SecurityGroupIds": [
+      {
+       "Fn::GetAtt": [
+        "GrafanaSecurityGroup750494FF",
+        "GroupId"
+       ]
+      }
+     ],
+     "SubnetIds": [
+      {
+       "Ref": "GrafanaVPCPrivateSubnet1Subnet3460214A"
+      },
+      {
+       "Ref": "GrafanaVPCPrivateSubnet2Subnet2B050686"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

@@ -1,12 +1,16 @@
 /**
- * An abstract action for VpcConfigurationProperty.
+ * Represents a VPC connection configuration for a Grafana workspace.
  */
-export interface IVpcConfigurationProperty{
+export interface IVpcConfigurationProperty {
   /**
-   * Returns the receipt VpcConfigurationProperty specification
+   * Returns the VPC configuration.
    */
   bind(receiptRule: IVpcConfigurationProperty): VpcConfigurationProperty;
 }
+
+/**
+ * Connects an Amazon Managed Grafana workspace to data sources within an Amazon VPC.
+ */
 export interface VpcConfigurationProperty {
   /**
    * The list of Amazon EC2 security group IDs attached to the Amazon VPC for your Grafana workspace to connect.

@@ -1,16 +1,18 @@
 import type { IResolvable } from '../../core';
 
 /**
- * An abstract action for a idpMetadata.
+ * Represents an identity provider (IdP) metadata source for SAML authentication.
  */
 export interface IIdpMetadataProperty {
   /**
-   * Returns the idpMetadata specification
+   * Returns the IdP metadata configuration.
    */
   bind(receiptRule: IIdpMetadataProperty): IdpMetadataProperty;
-
 }
 
+/**
+ * Identity provider (IdP) metadata for SAML authentication, specified as a URL or inline XML.
+ */
 export interface IdpMetadataProperty {
   /**
    * The URL of the location containing the IdP metadata.
@@ -23,95 +25,101 @@ export interface IdpMetadataProperty {
 }
 
 /**
- * An abstract action for a AssertionAttributesProperty.
+ * Represents a mapping of SAML assertion attributes to workspace user information.
  */
 export interface IAssertionAttributesProperty {
   /**
-   * Returns the AssertionAttributesProperty specification
+   * Returns the assertion attributes configuration.
    */
   bind(receiptRule: IAssertionAttributesProperty): AssertionAttributesProperty;
-
 }
 
+/**
+ * Maps SAML assertion attributes to Grafana workspace user fields.
+ */
 export interface AssertionAttributesProperty {
   /**
-   * The name of the attribute within the SAML assertion to use as the email names for SAML users.
+   * The name of the attribute within the SAML assertion to use as the email for SAML users.
    */
   readonly email?: string;
   /**
-   * The name of the attribute within the SAML assertion to use as the user full "friendly" names for user groups.
+   * The name of the attribute within the SAML assertion to use as user groups.
    */
   readonly groups?: string;
   /**
-   * The name of the attribute within the SAML assertion to use as the login names for SAML users.
+   * The name of the attribute within the SAML assertion to use as the login name for SAML users.
    */
   readonly login?: string;
   /**
-   * The name of the attribute within the SAML assertion to use as the user full "friendly" names for SAML users.
+   * The name of the attribute within the SAML assertion to use as the display name for SAML users.
    */
   readonly name?: string;
   /**
-   * The name of the attribute within the SAML assertion to use as the user full "friendly" names for the users' organizations.
+   * The name of the attribute within the SAML assertion to use as the user's organization.
    */
   readonly org?: string;
   /**
-   * The name of the attribute within the SAML assertion to use as the user roles.
+   * The name of the attribute within the SAML assertion to use as the user role.
    */
   readonly role?: string;
 }
 
 /**
- * An abstract action for a roleValuesProperty.
+ * Represents a mapping of SAML groups to Grafana workspace roles.
  */
 export interface IRoleValuesProperty {
   /**
-   * Returns the roleValuesProperty specification
+   * Returns the role values configuration.
    */
   bind(receiptRule: IRoleValuesProperty): RoleValuesProperty;
-
 }
 
+/**
+ * Maps SAML assertion group names to Grafana Admin and Editor roles.
+ */
 export interface RoleValuesProperty {
   /**
-   * A list of groups from the SAML assertion attribute to grant the Grafana Admin role to.
+   * A list of groups from the SAML assertion to grant the Grafana Admin role to.
    */
   readonly admin?: string[];
   /**
-   * A list of groups from the SAML assertion attribute to grant the Grafana Editor role to.
+   * A list of groups from the SAML assertion to grant the Grafana Editor role to.
    */
   readonly editor?: string[];
 }
 
 /**
- * An abstract action for SamlConfigurationProperty.
+ * Represents a SAML authentication configuration for a Grafana workspace.
  */
 export interface ISamlConfigurationProperty {
   /**
-   * Returns the receipt SamlConfigurationProperty specification
+   * Returns the SAML configuration.
    */
   bind(receiptRule: ISamlConfigurationProperty): SamlConfigurationProperty;
-
 }
 
+/**
+ * SAML 2.0 authentication configuration for an Amazon Managed Grafana workspace.
+ */
 export interface SamlConfigurationProperty {
   /**
-   * A structure containing the identity provider (IdP) metadata used to integrate the identity provider with this workspace.
+   * The identity provider (IdP) metadata used to integrate the IdP with this workspace.
    */
   readonly idpMetadata: IdpMetadataProperty | IResolvable;
   /**
-   * Lists which organizations defined in the SAML assertion are allowed to use the Amazon Managed Grafana workspace.
+   * Organizations defined in the SAML assertion that are allowed to use this workspace.
    */
   readonly allowedOrganizations?: string[];
   /**
-   * A structure that defines which attributes in the SAML assertion are to be used to define information about the users authenticated by that IdP to use the workspace.
+   * Defines which SAML assertion attributes map to workspace user information.
    */
   readonly assertionAttributes?: AssertionAttributesProperty | IResolvable;
   /**
-   * How long a sign-on session by a SAML user is valid, before the user has to sign on again.
+   * How long (in minutes) a SAML sign-on session is valid before the user must sign on again.
    */
   readonly loginValidityDuration?: number;
   /**
-   * A structure containing arrays that map group names in the SAML assertion to the Grafana Admin and Editor roles in the workspace.
+   * Maps SAML assertion group names to the Grafana Admin and Editor roles in the workspace.
    */
   readonly roleValues?: RoleValuesProperty | IResolvable;
 }

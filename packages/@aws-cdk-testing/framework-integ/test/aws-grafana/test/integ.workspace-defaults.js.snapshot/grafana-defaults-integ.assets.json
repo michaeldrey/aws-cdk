@@ -1,0 +1,20 @@
+{
+  "version": "52.0.0",
+  "files": {
+    "80df13d3215701dedac6b547da10d47573f8aeb78ea6daf19752a3df35d9af91": {
+      "displayName": "grafana-defaults-integ Template",
+      "source": {
+        "path": "grafana-defaults-integ.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region-9f5c2f18": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "80df13d3215701dedac6b547da10d47573f8aeb78ea6daf19752a3df35d9af91.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

@@ -1,0 +1,37 @@
+{
+  "/grafana-saml-integ/GrafanaRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    }
+  ],
+  "/grafana-saml-integ/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/grafana-saml-integ/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/grafana-saml-integ/GrafanaRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GrafanaRole3A2DB257"
+    }
+  ],
+  "/grafana-saml-integ/SamlWorkspace/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SamlWorkspace41F79B5F"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": "52.0.0",
+  "testCases": {
+    "GrafanaWorkspaceSamlTest/DefaultTest": {
+      "stacks": [
+        "grafana-saml-integ"
+      ],
+      "assertionStack": "GrafanaWorkspaceSamlTest/DefaultTest/DeployAssert",
+      "assertionStackName": "GrafanaWorkspaceSamlTestDefaultTestDeployAssertB403D84E"
+    }
+  },
+  "minimumCliVersion": "2.1107.0"
+}

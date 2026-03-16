@@ -1,0 +1,20 @@
+{
+  "version": "52.0.0",
+  "files": {
+    "560ae0c4dc94d16a0b885c8bccaaa910fef52bebf3ea8035e5e4deb226ba0c3b": {
+      "displayName": "grafana-saml-integ Template",
+      "source": {
+        "path": "grafana-saml-integ.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region-11745174": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "560ae0c4dc94d16a0b885c8bccaaa910fef52bebf3ea8035e5e4deb226ba0c3b.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

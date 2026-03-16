@@ -1,0 +1,13 @@
+{
+  "version": "52.0.0",
+  "testCases": {
+    "GrafanaWorkspaceDefaultsTest/DefaultTest": {
+      "stacks": [
+        "grafana-defaults-integ"
+      ],
+      "assertionStack": "GrafanaWorkspaceDefaultsTest/DefaultTest/DeployAssert",
+      "assertionStackName": "GrafanaWorkspaceDefaultsTestDefaultTestDeployAssertDB32B6D2"
+    }
+  },
+  "minimumCliVersion": "2.1107.0"
+}

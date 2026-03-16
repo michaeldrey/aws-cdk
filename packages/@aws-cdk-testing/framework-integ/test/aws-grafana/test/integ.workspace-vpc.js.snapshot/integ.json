@@ -1,0 +1,13 @@
+{
+  "version": "52.0.0",
+  "testCases": {
+    "GrafanaWorkspaceVpcTest/DefaultTest": {
+      "stacks": [
+        "grafana-vpc-integ"
+      ],
+      "assertionStack": "GrafanaWorkspaceVpcTest/DefaultTest/DeployAssert",
+      "assertionStackName": "GrafanaWorkspaceVpcTestDefaultTestDeployAssertE1A391EA"
+    }
+  },
+  "minimumCliVersion": "2.1107.0"
+}
